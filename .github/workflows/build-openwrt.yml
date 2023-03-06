@@ -23,9 +23,14 @@ on:
         required: false
         default: 'master'
         type: string
+      repo:
+        description: 'The repo to build'
+        required: false
+        default: 'https://github.com/coolsnowwolf/lede'
+        type: string
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: ${{ github.event.inputs.repo }}
   REPO_BRANCH: ${{ github.event.inputs.tag }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
