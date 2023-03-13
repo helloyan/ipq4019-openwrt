@@ -9,7 +9,7 @@ index 7cc22c2..06a2185 100644
 +define KernelPackage/usb-serial-ch9344
 +  TITLE:=Support for CH9344 devices
 +  KCONFIG:=CONFIG_USB_SERIAL_CH9344
-+  FILES:=$(LINUX_DIR)/drivers/usb/serial/ch9344.ko
++  FILES:=$(LINUX_DIR)/drivers/usb/serial/ch9344/ch9344.ko
 +  AUTOLOAD:=$(call AutoProbe,ch9344)
 +  $(call AddDepends/usb-serial)
 +endef
