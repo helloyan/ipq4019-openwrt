@@ -10,6 +10,6 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
-git clone https://github.com/helloyan/luci-theme-neobird.git  feeds/luci/themes/luci-theme-neobird
-./scripts/feeds update -i luci
-./scripts/feeds install -a -p luci
+#git clone https://github.com/helloyan/luci-theme-neobird.git  feeds/luci/themes/luci-theme-neobird
+#./scripts/feeds update -i luci
+#./scripts/feeds install -a -p luci

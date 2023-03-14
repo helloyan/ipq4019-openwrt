@@ -13,6 +13,11 @@
 # Uncomment a feed source
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
+# apply patch
+wget https://raw.githubusercontent.com/helloyan/ipq4019-openwrt/main/r619ac.patch
+git apply r619ac.patch
+
 # Add a feed source
-#echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+#echo 'src-git dmzk https://github.com/helloyan/dmzk' >>feeds.conf.default
+cd package
+git clone --recursive https://github.com/helloyan/dmzk.git
