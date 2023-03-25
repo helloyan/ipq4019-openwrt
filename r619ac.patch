@@ -9,10 +9,59 @@ index 3181021..7827b4b 100644
 -ttyMSM0::askfirst:/usr/libexec/login.sh
 -ttyMSM1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
-index d8b68ab..b037023 100644
+index d8b68ab..548e95c 100644
 --- a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
 +++ b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
-@@ -201,6 +201,12 @@
+@@ -89,29 +89,40 @@
+ 
+ 		led_sys: sys {
+ 			label = "blue:sys";
+-			gpios = <&tlmm 39 GPIO_ACTIVE_HIGH>;
++			gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+ 		wlan2g {
+ 			label = "blue:wlan2g";
+-			gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "phy0tpt";
++			gpios = <&tlmm 1 GPIO_ACTIVE_LOW>;
+ 		};
+ 
+ 		wlan5g {
+ 			label = "blue:wlan5g";
+-			gpios = <&tlmm 50 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "phy1tpt";
++			gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
+ 		};
++
++        internet {
++            label = "blue:internet";
++            gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
++        };
++
++        usb {
++            label = "blue:usb";
++            gpios = <&tlmm 5 GPIO_ACTIVE_LOW>;
++        };
+ 	};
+ 
+-	keys {
++gpio_keys {
+ 		compatible = "gpio-keys";
++        pinctrl-0 = <&button_pins>;
++        pinctrl-names = "default";
+ 
+-		reset {
++        button@2 {
+ 			label = "reset";
+-			gpios = <&tlmm 18 GPIO_ACTIVE_LOW>;
++			gpios = <&tlmm 18 GPIO_ACTIVE_HIGH>;
+ 			linux,code = <KEY_RESTART>;
++            linux,input-type = <0x01>;
+ 		};
+ 	};
+ };
+@@ -201,6 +212,12 @@
  	status = "okay";
  };
  
@@ -25,18 +74,61 @@ index d8b68ab..b037023 100644
  &cryptobam {
  	status = "okay";
  };
-@@ -300,6 +306,14 @@
+@@ -231,9 +248,9 @@
+ 	status = "okay";
+ 	pinctrl-0 = <&pcie_pins>;
+ 	pinctrl-names = "default";
+-	perst-gpio = <&tlmm 4 GPIO_ACTIVE_HIGH>;
+-	wake-gpio = <&tlmm 40 GPIO_ACTIVE_HIGH>;
+-
++	perst-gpio = <&tlmm 0x26 GPIO_ACTIVE_LOW>;
++	wake-gpio = <&tlmm 0x28 GPIO_ACTIVE_HIGH>;
++    clkreq-gpio = <&tlmm 0x27 GPIO_ACTIVE_HIGH>;
+ 	/* Free slot for use */
+ 	bridge@0,0 {
+ 		reg = <0x00000000 0 0 0 0>;
+@@ -300,28 +317,30 @@
  		};
  	};
  
+-	led_pins: led_pinmux {
 +	serial_1_pins: serial1-pinmux {
-+		mux {
+ 		mux {
+-			pins = "gpio32", "gpio39", "gpio50";
+-			function = "gpio";
+-			bias-pull-up;
+-			output-low;
 +			pins = "gpio8", "gpio9";
 +			function = "blsp_uart1";
 +			bias-disable;
-+		};
+ 		};
 +	};
+ 
+-		mux_1 {
+-			pins = "gpio52";
++	led_pins: led_pinmux {
++		mux {
++			pins = "gpio1", "gpio2", "gpio3", "gpio4", "gpio5";
+ 			function = "gpio";
+ 			bias-pull-up;
+ 			output-high;
+ 		};
+-
+-		mux_2 {
+-			pins = "gpio61";
+-			function = "gpio";
+-			bias-pull-down;
+-			output-high;
+-		};
+ 	};
 +
- 	led_pins: led_pinmux {
- 		mux {
- 			pins = "gpio32", "gpio39", "gpio50";
++    button_pins: btn_pinmux {
++        mux {
++            pins = "gpio0", "gpio18";
++            function = "gpio";
++            bias-pull-up;
++        };
++    };
+ };
+ 
+ &ethphy0 {
