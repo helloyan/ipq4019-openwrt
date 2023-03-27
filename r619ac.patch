@@ -9,12 +9,54 @@ index 3181021..7827b4b 100644
 -ttyMSM0::askfirst:/usr/libexec/login.sh
 -ttyMSM1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
-index d8b68ab..548e95c 100644
+index d8b68ab..b3cbf6d 100644
 --- a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
 +++ b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
-@@ -89,29 +89,40 @@
+@@ -5,17 +5,31 @@
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/soc/qcom,tcsr.h>
  
- 		led_sys: sys {
++/delete-node/ &psgmiiphy;
++
+ / {
+-	aliases {
+-		led-boot = &led_sys;
+-		led-failsafe = &led_sys;
+-		led-running = &led_sys;
+-		led-upgrade = &led_sys;
+-		label-mac-device = &gmac0;
++   	memory {
++		device_type = "memory";
++		reg = <0x80000000 0x40000000>;
+ 	};
++	   reserved-memory {
++                #address-cells = <0x1>;
++                #size-cells = <0x1>;
++                ranges;
++
++                smem_region: smem@87e00000 {
++                        reg = <0x87e00000 0x080000>;
++                        no-map;
++                };
++
++                tz@87e80000 {
++                        reg = <0x87e80000 0x180000>;
++                        no-map;
++                };
++        };
+ 
+ 	chosen {
+-		bootargs-append = " root=/dev/ubiblock0_1 rootfstype=squashfs";
++		bootargs-append = " root=/dev/ubiblock0_1 rootfstype=squashfs clk_ignore_unused";
+ 	};
+ 
+ 	soc {
+@@ -87,31 +101,42 @@
+ 		pinctrl-0 = <&led_pins>;
+ 		pinctrl-names = "default";
+ 
+-		led_sys: sys {
++		sys {
  			label = "blue:sys";
 -			gpios = <&tlmm 39 GPIO_ACTIVE_HIGH>;
 +			gpios = <&tlmm 3 GPIO_ACTIVE_LOW>;
@@ -61,7 +103,7 @@ index d8b68ab..548e95c 100644
  		};
  	};
  };
-@@ -201,6 +212,12 @@
+@@ -201,6 +226,12 @@
  	status = "okay";
  };
  
@@ -74,7 +116,7 @@ index d8b68ab..548e95c 100644
  &cryptobam {
  	status = "okay";
  };
-@@ -231,9 +248,9 @@
+@@ -231,9 +262,9 @@
  	status = "okay";
  	pinctrl-0 = <&pcie_pins>;
  	pinctrl-names = "default";
@@ -87,7 +129,7 @@ index d8b68ab..548e95c 100644
  	/* Free slot for use */
  	bridge@0,0 {
  		reg = <0x00000000 0 0 0 0>;
-@@ -300,28 +317,30 @@
+@@ -300,58 +331,30 @@
  		};
  	};
  
@@ -121,7 +163,36 @@ index d8b68ab..548e95c 100644
 -			output-high;
 -		};
  	};
-+
+-};
+-
+-&ethphy0 {
+-	qcom,single-led-1000;
+-	qcom,single-led-100;
+-	qcom,single-led-10;
+-};
+-
+-&ethphy1 {
+-	qcom,single-led-1000;
+-	qcom,single-led-100;
+-	qcom,single-led-10;
+-};
+-
+-&ethphy2 {
+-	qcom,single-led-1000;
+-	qcom,single-led-100;
+-	qcom,single-led-10;
+-};
+-
+-&ethphy3 {
+-	qcom,single-led-1000;
+-	qcom,single-led-100;
+-	qcom,single-led-10;
+-};
+ 
+-&ethphy4 {
+-	qcom,single-led-1000;
+-	qcom,single-led-100;
+-	qcom,single-led-10;
 +    button_pins: btn_pinmux {
 +        mux {
 +            pins = "gpio0", "gpio18";
@@ -131,4 +202,4 @@ index d8b68ab..548e95c 100644
 +    };
  };
  
- &ethphy0 {
+ &usb3_ss_phy {
