@@ -9,14 +9,14 @@ index 3181021..7827b4b 100644
 -ttyMSM0::askfirst:/usr/libexec/login.sh
 -ttyMSM1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
-index d8b68ab..b3cbf6d 100644
+index d8b68ab..b89c332 100644
 --- a/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
 +++ b/target/linux/ipq40xx/files/arch/arm/boot/dts/qcom-ipq4019-r619ac.dtsi
 @@ -5,17 +5,31 @@
  #include <dt-bindings/input/input.h>
  #include <dt-bindings/soc/qcom,tcsr.h>
  
-+/delete-node/ &psgmiiphy;
++///delete-node/ &psgmiiphy;
 +
  / {
 -	aliases {
@@ -51,7 +51,22 @@ index d8b68ab..b3cbf6d 100644
  	};
  
  	soc {
-@@ -87,31 +101,42 @@
+@@ -26,10 +40,14 @@
+ 		mdio@90000 {
+ 			status = "okay";
+ 			pinctrl-0 = <&mdio_pins>;
++            phy-reset-gpio = <&tlmm 0x2f 0x00>;
+ 			pinctrl-names = "default";
++            bias-disable;
+ 		};
+ 
+ 		ess-psgmii@98000 {
++            resets = <&gcc 0x4d>;
++            reset-names = "psgmii_rst";
+ 			 status = "okay";
+ 		};
+ 
+@@ -87,31 +105,42 @@
  		pinctrl-0 = <&led_pins>;
  		pinctrl-names = "default";
  
@@ -103,7 +118,7 @@ index d8b68ab..b3cbf6d 100644
  		};
  	};
  };
-@@ -201,6 +226,12 @@
+@@ -201,6 +230,12 @@
  	status = "okay";
  };
  
@@ -116,7 +131,7 @@ index d8b68ab..b3cbf6d 100644
  &cryptobam {
  	status = "okay";
  };
-@@ -231,9 +262,9 @@
+@@ -231,9 +266,9 @@
  	status = "okay";
  	pinctrl-0 = <&pcie_pins>;
  	pinctrl-names = "default";
@@ -129,7 +144,7 @@ index d8b68ab..b3cbf6d 100644
  	/* Free slot for use */
  	bridge@0,0 {
  		reg = <0x00000000 0 0 0 0>;
-@@ -300,58 +331,30 @@
+@@ -300,58 +335,30 @@
  		};
  	};
  
