@@ -11,6 +11,9 @@
 name: Build OpenWrt
 
 on:
+  schedule:
+    # 定时执行，Runs at 19:00 UTC/03:00 china every day
+    - cron:  '0 19 * * *'
   repository_dispatch:
   workflow_dispatch:
     inputs:
